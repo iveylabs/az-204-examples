@@ -11,7 +11,7 @@ Console.ReadLine();
 
 static async Task ProcessAsync()
 {
-    string storageConnectionString = "<Storage account connection string>";
+    string storageConnectionString = "[ENTER YOUR CONNECTION STRING HERE]";
     string containerName = "pivey" + Guid.NewGuid().ToString();
     string localPath = ".\\data";
     string fileName = "piveyfile" + Guid.NewGuid().ToString() + ".txt";
@@ -19,9 +19,11 @@ static async Task ProcessAsync()
     string downloadedFilePath = localFilePath.Replace(".txt", "_DOWNLOADED.txt");
     
     // Create a client that can authenticate with a connection string
+    Console.WriteLine("Creating BlobServiceClient...");
     BlobServiceClient blobServiceClient = new BlobServiceClient(storageConnectionString);
     
     // Create the container and return a BlobContainerClient object
+    Console.WriteLine("Creating BlobContainerClient...");
     BlobContainerClient containerClient = await blobServiceClient.CreateBlobContainerAsync(containerName);
     Console.WriteLine($"A container named '{containerName}' has been created. ");
     Console.WriteLine("Press ENTER to create and upload a file to the container...");
@@ -48,6 +50,39 @@ static async Task ProcessAsync()
     await foreach(BlobItem blobItem in containerClient.GetBlobsAsync())
     {
         Console.WriteLine($"\t{blobItem.Name}");
+    }
+
+    Console.WriteLine("Press ENTER to list some properties of the container...");
+    Console.ReadLine();
+
+    // Get some container properties and write them to console
+    var properties = await containerClient.GetPropertiesAsync();
+    Console.WriteLine($"Properties of container {containerClient.Uri}:");
+    Console.WriteLine($"\tPublic access level: {properties.Value.PublicAccess}");
+    Console.WriteLine($"\tLast modified time in UTC: {properties.Value.LastModified}:");
+
+    Console.WriteLine("Press ENTER to set some metadate on the container...");
+    Console.ReadLine();
+
+    IDictionary<string, string> metadata = new Dictionary<string, string>();
+
+    // Add some metadata to the Dictionary
+    metadata.Add("docType", "textDocuments");
+    metadata.Add("category", "demo");
+
+    // Set the metadata
+    await containerClient.SetMetadataAsync(metadata);
+
+    Console.WriteLine("Press ENTER to retrieve the container's metadata...");
+    Console.ReadLine();
+
+    // Get the container's metadata and write to console
+    properties = await containerClient.GetPropertiesAsync();
+    Console.WriteLine("Container metadata:");
+    foreach(var metadataItem in properties.Value.Metadata)
+    {
+        Console.WriteLine($"\tKey: {metadataItem.Key}");
+        Console.WriteLine($"\tValue: {metadataItem.Value}");
     }
 
     Console.WriteLine("Press ENTER to download the file with an altered file name...");
