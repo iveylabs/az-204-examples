@@ -61,7 +61,7 @@ static async Task ProcessAsync()
     Console.WriteLine($"\tPublic access level: {properties.Value.PublicAccess}");
     Console.WriteLine($"\tLast modified time in UTC: {properties.Value.LastModified}:");
 
-    Console.WriteLine("Press ENTER to set some metadate on the container...");
+    Console.WriteLine("Press ENTER to set some metadata on the container...");
     Console.ReadLine();
 
     IDictionary<string, string> metadata = new Dictionary<string, string>();
