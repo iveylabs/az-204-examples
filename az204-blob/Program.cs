@@ -1,0 +1,77 @@
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+
+Console.WriteLine("Azure Blob storage exercise\n");
+
+// Run the examples asynchronously, waiting for the results before proceeding
+ProcessAsync().GetAwaiter().GetResult();
+
+Console.WriteLine("Press ENTER to exit the sample application...");
+Console.ReadLine();
+
+static async Task ProcessAsync()
+{
+    string storageConnectionString = "<Storage account connection string>";
+    string containerName = "pivey" + Guid.NewGuid().ToString();
+    string localPath = ".\\data";
+    string fileName = "piveyfile" + Guid.NewGuid().ToString() + ".txt";
+    string localFilePath = Path.Combine(localPath, fileName);
+    string downloadedFilePath = localFilePath.Replace(".txt", "_DOWNLOADED.txt");
+    
+    // Create a client that can authenticate with a connection string
+    BlobServiceClient blobServiceClient = new BlobServiceClient(storageConnectionString);
+    
+    // Create the container and return a BlobContainerClient object
+    BlobContainerClient containerClient = await blobServiceClient.CreateBlobContainerAsync(containerName);
+    Console.WriteLine($"A container named '{containerName}' has been created. ");
+    Console.WriteLine("Press ENTER to create and upload a file to the container...");
+    Console.ReadLine();
+
+    // Write text to the file
+    await File.WriteAllTextAsync(localFilePath, "Hello, World!");
+
+    //Get a reference to the blob and create it if it doesn't already exist
+    BlobClient blobClient = containerClient.GetBlobClient(fileName);
+
+    Console.WriteLine($"Uploading {fileName} as blob: \n\t{blobClient.Uri}\n");
+
+    // Open the file and upload its data
+    using FileStream uploadFileStream = File.OpenRead(localFilePath);
+    await blobClient.UploadAsync(uploadFileStream, true);
+    uploadFileStream.Close();
+
+    Console.WriteLine("The file was uploaded. Press ENTER to list all blobs in the container...");
+    Console.ReadLine();
+
+    // List all blobs in the container
+    Console.WriteLine("Listing blobs...");
+    await foreach(BlobItem blobItem in containerClient.GetBlobsAsync())
+    {
+        Console.WriteLine($"\t{blobItem.Name}");
+    }
+
+    Console.WriteLine("Press ENTER to download the file with an altered file name...");
+    Console.ReadLine();
+
+    Console.WriteLine($"Downloading blob to\n\t{downloadedFilePath}");
+    
+    // Download the blob locally
+    BlobDownloadInfo downloadInfo = await blobClient.DownloadAsync();
+
+    using (FileStream downloadFileStream = File.OpenWrite(downloadedFilePath))
+    {
+        await downloadInfo.Content.CopyToAsync(downloadFileStream);
+        downloadFileStream.Close();
+    }
+    Console.WriteLine("File downloaded. Press ENTER to delete the container and local files.");
+    Console.ReadLine();
+
+    // Delete the container and clean up local files
+    Console.WriteLine("\n\nDeleting the container...");
+    await containerClient.DeleteAsync();
+
+    Console.WriteLine("Deleting the local source and downloaded files...");
+    File.Delete(localFilePath);
+    File.Delete(downloadedFilePath);
+    Console.WriteLine("Clean up completed.");
+}
