@@ -20,7 +20,6 @@ namespace SeedCacheForCustomerQuerySample
         static void Main(string[] args)
         {
             generateCustomerRecords();
-            primeCustomerCache();
             Console.WriteLine("Seeding completed successfully. Press ENTER to exit...");
             Console.ReadLine();
         }
@@ -82,37 +81,6 @@ namespace SeedCacheForCustomerQuerySample
                     table.ExecuteBatch(batch);
                 }
             }
-        }
-
-        static void primeCustomerCache()
-        {
-            if (!confirmOperation("YOUR CACHE WILL BE FLUSHED! ALL EXISTING INDEXES WILL BE REPLACED! Are you sure?"))
-                return;
-
-            CloudStorageAccount account = CloudStorageAccount.Parse(mStorageConnectionString);
-            var client = account.CreateCloudTableClient();
-            var table = client.GetTableReference("customers");
-            var query = from c in table.CreateQuery<Customer>()
-                        select c;
-
-            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(mCacheConnectionString);
-            IDatabase db = redis.GetDatabase();
-
-            RedisResult result = db.Execute("PING");
-            Console.WriteLine(result);
-
-            Console.WriteLine("Flushing DB...");
-            db.Execute("FLUSHDB");
-            Console.WriteLine("Done flushing DB");
-
-            foreach(var c in query)
-            {
-                string key = string.Format("{0}:{1}", c.PartitionKey, c.RowKey);
-                Console.WriteLine("{0}:{1}", key, c.Name);
-                db.SortedSetAdd("customervalues", key, c.Value);
-                db.StringSet("cust:" + c.Name.Replace(' ', ':'), key);
-            }
-            redis.Dispose();
         }
         static bool confirmOperation(string message) 
         {
