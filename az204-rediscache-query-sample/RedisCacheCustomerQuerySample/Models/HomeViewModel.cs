@@ -17,7 +17,7 @@ namespace CustomerQuery.Models
         [Display(Name = "Response time cache only")]
         [DisplayFormat(DataFormatString = "{0:N}")]
         public long CacheResponseTime { get; set; }
-        [Display(Name="Response time without cache")]
+        [Display(Name="Response time no cache")]
         [DisplayFormat(DataFormatString = "{0:N}")]
         public long TableResponseTime { get; set; }
         [Display(Name = "Time saved by cache")]
