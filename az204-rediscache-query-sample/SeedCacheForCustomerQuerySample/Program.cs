@@ -13,9 +13,6 @@ namespace SeedCacheForCustomerQuerySample
     class Program
     {
         public static string mStorageConnectionString = ConfigurationManager.AppSettings["mStorageConnectionString"];
-        //cache for customers
-        public static string mCacheConnectionString = ConfigurationManager.AppSettings["mCacheConnectionString"];
-
         
         static void Main(string[] args)
         {

@@ -29,7 +29,57 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3>Data Directly from Cache</h3>
+            </div>
+            <div class="panel-body">
+                @if (Model.CachedCustomers.Count > 0)
+                {
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in Model.CachedCustomers)
+                            {
+                                <tr>
+                                    <td>@c.Name</td>
+                                    <td>@c.Value</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><i>No Records Found</i></td></tr>
+                        </tbody>
+                    </table>
+                }
+            </div>
+            <div class="panel-footer">
+                <h4>
+                    @Html.LabelFor(m => m.CacheResponseTime)
+                    <span class="alert-success">@Html.DisplayFor(m => m.CacheResponseTime)</span>
+                    <span>(ms)</span>
+                </h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
         <div class="panel panel-success">
             <div class="panel-heading">
                 <h3>Cached Access to Table Storage</h3>
@@ -75,11 +125,17 @@
                     @Html.LabelFor(m => m.CachedResponseTime)
                     <span class="alert-success">@Html.DisplayFor(m => m.CachedResponseTime)</span>
                     <span>(ms)</span>
+                    @if (Model.TableCustomers.Count > 0 && Model.TableResponseTime > Model.CachedResponseTime && !Model.NotPreviouslyInCache)
+                    {
+                        @Html.LabelFor(m => m.ResponseTimeDifference)
+                        <span class="alert-success">@Html.DisplayFor(m => m.ResponseTimeDifference)</span>
+                        <span>(ms)</span>
+                    }
                 </h4>
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="panel panel-warning">
             <div class="panel-heading">
                 <h3>Direct Access to Table Storage</h3>
@@ -129,7 +185,7 @@
             </div>
         </div>
     </div>
-    @if (Model.TableCustomers.Count > 0 && Model.TableResponseTime > Model.CachedResponseTime && !Model.NotPreviouslyInCache)
+    @*@if (Model.TableCustomers.Count > 0 && Model.TableResponseTime > Model.CachedResponseTime && !Model.NotPreviouslyInCache)
     {
         <div class="label-success" style="text-align:center">
             <h3>
@@ -137,11 +193,11 @@
                 <span>(ms)</span>
             </h3>
         </div>
-    }
+    }*@
     @if (Model.TableCustomers.Count == 0 && Model.SearchString != null)
     {
         <div class="label-danger" style="text-align:center">
-            <h3>No records found with the name "@Html.ValueFor(m => m.SearchString)"</h3>
+            <h3>No records found for "@Html.ValueFor(m => m.SearchString)"</h3>
         </div>
     }
     @if (Model.NotPreviouslyInCache)

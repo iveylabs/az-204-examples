@@ -43,13 +43,13 @@ namespace CustomerQuery.Controllers
             {
                 foreach (var entity in queryResults)
                 {
-                    TableEntity newEntity = tableClient.GetEntity<TableEntity>(entity.PartitionKey, entity.RowKey);
-                    newEntity["Value"] = ((double)entity["Value"] * 100) / 100.0;
-                    tableClient.UpdateEntity(newEntity, entity.ETag, TableUpdateMode.Merge);
+                    //TableEntity newEntity = tableClient.GetEntity<TableEntity>(entity.PartitionKey, entity.RowKey);
+                    //newEntity["Value"] = ((double)entity["Value"] * 100) / 100.0;
+                    //tableClient.UpdateEntity(newEntity, entity.ETag, TableUpdateMode.Merge);
                     data.TableCustomers.Add(new Customer
                     {
                         Name = data.SearchString,
-                        Value = String.Format("{0:C2}", newEntity["Value"])
+                        Value = String.Format("{0:C2}", entity["Value"])
                     });
                 }
 
@@ -64,25 +64,37 @@ namespace CustomerQuery.Controllers
                 // If the customer details are already cached
                 if (!record.IsNullOrEmpty)
                 {
+                    // Query the table using the cached partition key and row key
                     string[] parts = Encoding.ASCII.GetString(record).Split(':');
                     if (parts.Length == 2)
                     {
                         var quickQueryResults = tableClient.Query<TableEntity>(filter: $"PartitionKey eq '{parts[0]}' and RowKey eq '{parts[1]}'");
                         foreach (var entity in quickQueryResults)
                         {
-                            TableEntity newEntity = tableClient.GetEntity<TableEntity>(entity.PartitionKey, entity.RowKey);
-                            newEntity["Value"] = ((double)entity["Value"] * 100) / 100.0;
-                            tableClient.UpdateEntity(newEntity, entity.ETag, TableUpdateMode.Merge);
+                            //TableEntity newEntity = tableClient.GetEntity<TableEntity>(entity.PartitionKey, entity.RowKey);
+                            //newEntity["Value"] = ((double)entity["Value"] * 100) / 100.0;
+                            //tableClient.UpdateEntity(newEntity, entity.ETag, TableUpdateMode.Merge);
                             data.MatchedCustomers.Add(new Customer
                             {
                                 Name = data.SearchString,
-                                Value = String.Format("{0:C2}", newEntity["Value"])
+                                Value = String.Format("{0:C2}", entity["Value"])
                             });
                         }
                     }
                     watch.Stop();
                     data.CachedResponseTime = watch.ElapsedMilliseconds;
                     data.ResponseTimeDifference = (data.TableResponseTime - data.CachedResponseTime);
+
+                    watch.Restart();
+                    // Use only the cached values
+                    data.CachedCustomers.Add(new Customer
+                    {
+                        Name = data.SearchString,
+                        Value = String.Format("{0:C2}", db.SortedSetScore("customervalues", record))
+                    });
+                    watch.Stop();
+                    data.CacheResponseTime = watch.ElapsedMilliseconds;
+                    
                 }
                 // If the customer details aren't in the cache yet, add to the cache
                 else
@@ -97,7 +109,6 @@ namespace CustomerQuery.Controllers
                 }
                 connection.Dispose();
             }
-
 
             return View("Index", data);
         }
