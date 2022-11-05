@@ -1,0 +1,12 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    HttpClient httpClient = new HttpClient();
+    HttpResponseMessage responseMessage = await httpClient.GetAsync("http://DESKTOP-G83D9E5:5153/weatherforecast");
+    var responseBody = await responseMessage.Content.ReadAsStringAsync();
+    var result = new JsonResult(responseBody).Value;
+}
+<div class="text-center">
+    <p>@result</p>
+</div>
