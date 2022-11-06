@@ -1,0 +1,9 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1>@Environment.GetEnvironmentVariable("MY_GREETING")</h1>
+</div>
