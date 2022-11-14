@@ -1,0 +1,33 @@
+{
+  "rules": [
+    {
+      "enabled": true,
+      "name": "Created using the CLI",
+      "type": "Lifecycle",
+      "definition": {
+        "actions": {
+          "baseBlob": {
+            "tierToCool": {
+              "daysAfterModificationGreaterThan": 30
+            },
+            "tierToArchive": {
+              "daysAfterLastTierChangeGreaterThan": 7,
+              "daysAfterModificationGreaterThan": 45
+            },
+            "delete": {
+              "daysAfterModificationGreaterThan": 90
+            }
+          }
+        },
+        "filters": {
+          "blobTypes": [
+            "blockBlob"
+          ],
+          "prefixMatch": [
+            "az204/blah_"
+          ]
+        }
+      }
+    }
+  ]
+}

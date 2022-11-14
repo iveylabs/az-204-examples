@@ -1,0 +1,10 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">System-assigned managed identity demo</h1>
+    <h3>Secret value: @(Environment.GetEnvironmentVariable("KV_SECRET"))</h3>
+</div>

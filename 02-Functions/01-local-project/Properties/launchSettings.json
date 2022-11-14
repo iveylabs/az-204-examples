@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "_01_local_project": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7021",
+      "launchBrowser": false
+    }
+  }
+}
