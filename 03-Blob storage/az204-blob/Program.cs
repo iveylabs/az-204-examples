@@ -1,4 +1,5 @@
-﻿using Azure.Storage.Blobs;
+﻿
+using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 
 Console.WriteLine("Azure Blob storage exercise\n");
