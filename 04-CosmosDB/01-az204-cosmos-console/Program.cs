@@ -25,20 +25,19 @@ static async Task ProcessAsync()
 
     // Create a new database if it doesn't already exist
     database = await cosmosClient.CreateDatabaseIfNotExistsAsync(databaseId);
-    Console.WriteLine($"Created database: {database.Id}\nPress ENTER to create the container...");
+    Console.WriteLine($"Database: {database.Id}\nPress ENTER to create the container...");
     Console.ReadLine();
 
     // Create a new container within the database if it doesn't already exist
     container = await database.CreateContainerIfNotExistsAsync(containerId, "/lastName");
-    Console.WriteLine($"Created container: {container.Id}\nPress ENTER to create a new item in the container...");
+    Console.WriteLine($"Container: {container.Id}");
+    Console.WriteLine("\nREMEMBER: Create demotrigger pre-trigger!\nPress ENTER to create a new item in the container...");
     Console.ReadLine();
 
     // Create new objects
     var paul = await CreateItem(container, Guid.NewGuid().ToString(), "Paul", "Ivey", "Brown");
     var another = await CreateItem(container, Guid.NewGuid().ToString(), "Another", "Ivey", "Blue");
     var john = await CreateItem(container, Guid.NewGuid().ToString(), "John", "Wick", "Brown");
-
-    Console.WriteLine($"Paul created in container: {paul.id}.");
 
     // Read the item using the unique id
     ItemResponse<Entry> response = await  container.ReadItemAsync<Entry>(
@@ -49,11 +48,12 @@ static async Task ProcessAsync()
     // Serialise response
     Entry item = response.Resource;
     
-    Console.WriteLine("Details obtained from reading the item:");
+    Console.WriteLine("\nDetails obtained from reading the item:");
     Console.WriteLine($"ID: {item.id}");
     Console.WriteLine($"Name: {item.firstName} {item.lastName}");
-    Console.WriteLine($"Eye colour: {item.eyeColour}");
+    Console.WriteLine($"Eye colour: {item.eyeColour}\n");
 
+    Console.WriteLine(@"Running query: SELECT * FROM c WHERE c.lastName = 'Ivey'...");
     // Query using SQL
     var iterator = container.GetItemQueryIterator<Entry>(
         "SELECT * FROM c WHERE c.lastName = 'Ivey'"
@@ -65,9 +65,10 @@ static async Task ProcessAsync()
         var batch = await iterator.ReadNextAsync();
         foreach(Entry entry in batch)
         {
-            Console.WriteLine($"id: {entry.id}\r{entry.firstName} {entry.lastName}\t{entry.eyeColour}");
+            Console.WriteLine($"id: {entry.id}\nName: {entry.firstName} {entry.lastName}\nEye colour: {entry.eyeColour}\n");
         }
     }
+    Console.WriteLine("Finished!");
 }
 
 static async Task<Entry> CreateItem(Container container, string id, string first, string last, string colour)
@@ -80,7 +81,13 @@ static async Task<Entry> CreateItem(Container container, string id, string first
     );
     Entry createdItem = await container.UpsertItemAsync<Entry>(
         item: newItem,
-        partitionKey: new PartitionKey(newItem.lastName)
+        partitionKey: new PartitionKey(newItem.lastName),
+        requestOptions: new ItemRequestOptions
+        {
+            PreTriggers = new List<string>{
+                "demotrigger"
+            }
+        }
     );
     return createdItem;
 }
