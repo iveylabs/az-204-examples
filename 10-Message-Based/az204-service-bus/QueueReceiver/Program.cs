@@ -2,7 +2,7 @@
 using Azure.Messaging.ServiceBus;
 
 string connectionString = "";
-string queueName = "";
+string queueName = "demo-queue";
 
 // Task to handle messages
 async Task MessageHandler(ProcessMessageEventArgs args)

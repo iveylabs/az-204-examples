@@ -35,7 +35,7 @@ var cacheHelper = await MsalCacheHelper
 cacheHelper.RegisterCache(app.UserTokenCache);
 
 // These scopes can be added to for demonstration purposes
-string[] scopes = { "user.read" };
+string[] scopes = { "user.read", "calendars.read" };
 
 // Call the method that tries to obtain tokens silently from the user cache
 // If unable to use a token from cache, it will prompt for interactive login

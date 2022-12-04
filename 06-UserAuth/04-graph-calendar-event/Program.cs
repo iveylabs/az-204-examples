@@ -3,8 +3,8 @@ using System.Net.Http.Headers;
 using Microsoft.Graph;
 
 // App registration variables
-const string _clientId = "Put your app/client ID here";
-const string _tenantId = "Put your tenant ID here";
+const string _clientId = "";
+const string _tenantId = "";
 
 // Initiatize public client app with MSAL
 var app = PublicClientApplicationBuilder

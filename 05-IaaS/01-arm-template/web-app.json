@@ -29,7 +29,7 @@
             "name": "[variables('appName')]",
             "location": "[parameters('location')]",
             "tags": {
-                "Chapter": "2"
+                "Module": "5"
             },
             "sku": {
                 "tier": "Standard",
@@ -42,7 +42,7 @@
             "name": "[variables('appName')]",
             "location": "[parameters('location')]",
             "tags": {
-                "Chapter": "2"
+                "Module": "5"
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms', variables('appName'))]"
@@ -53,11 +53,10 @@
                     "netFrameworkVersion": "v5.0",
                     "appSettings": [
                         {
-                            "name": "CHAPTER",
-                            "value": "2"
+                            "name": "Module",
+                            "value": "5"
                         }
                     ]
-                    
                 }
             },
             "resources": [

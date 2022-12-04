@@ -1,40 +1,13 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "clean",
-			"command": "dotnet",
-			"type": "process",
-			"args": [
-				"clean",
-				"${workspaceFolder}",
-				"/property:GenerateFullPaths=true",
-				"/consoleloggerparameters:NoSummary"
-			],
-			"problemMatcher": "$msCompile"
-		},
-		{
-			"label": "publish-release",
-			"command": "dotnet",
-			"type": "process",
-			"args": [
-				"publish",
-				"${workspaceFolder}",
-				"--configuration",
-				"Release",
-				"/property:GenerateFullPaths=true",
-				"/consoleloggerparameters:NoSummary"
-			],
-			"problemMatcher": "$msCompile",
-			"dependsOn": "clean"
-        },
+    "version": "2.0.0",
+    "tasks": [
         {
             "label": "build",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/02-keyvault-system-assigned.csproj",
+                "${workspaceFolder}/event-hubs-sender.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -46,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/02-keyvault-system-assigned.csproj",
+                "${workspaceFolder}/event-hubs-sender.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -60,9 +33,9 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/02-keyvault-system-assigned.csproj"
+                "${workspaceFolder}/event-hubs-sender.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
-	]
+    ]
 }

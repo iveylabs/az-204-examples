@@ -2,8 +2,8 @@
 using Azure.Messaging.ServiceBus;
 
 string connectionString = "";
-string topicName = "";
-string subscriptionName = "";
+string topicName = "demo-topic";
+string subscriptionName = "demo-sub";
 
 async Task MessageHandler(ProcessMessageEventArgs args)
 {

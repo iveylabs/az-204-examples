@@ -11,6 +11,23 @@ namespace Iveylabs.Function
 {
     public static class DurableFunctionsOrchestrationCSharp1
     {
+        // Client/starter function
+        [FunctionName("StarterFunction")]
+        public static async Task<HttpResponseMessage> HttpStart(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestMessage req,
+            [DurableClient] IDurableOrchestrationClient starter,
+            ILogger log)
+        {
+            // Function input comes from the request content.
+            // Call the orchestrator function
+            string instanceId = await starter.StartNewAsync("OrchestratorFunction", null);
+
+            log.LogInformation($"Started orchestration with ID = '{instanceId}'.");
+
+            // Create URL to check status
+            return starter.CreateCheckStatusResponse(req, instanceId);
+        }
+
         // Orchestrator function
         [FunctionName("OrchestratorFunction")]
         public static async Task<List<string>> RunOrchestrator(
@@ -52,14 +69,6 @@ namespace Iveylabs.Function
             return outputs;
         }
 
-        // Activity function
-        [FunctionName(nameof(SayHello))]
-        public static string SayHello([ActivityTrigger] string name, ILogger log)
-        {
-            log.LogInformation($"Saying hello to {name}.");
-            return $"Hello {name}!";
-        }
-
         // Entity function
         [FunctionName("Counter")]
         public static async Task Counter([EntityTrigger] IDurableEntityContext ctx, ILogger log)
@@ -81,21 +90,12 @@ namespace Iveylabs.Function
             }
         }
 
-        // Client/starter function
-        [FunctionName("StarterFunction")]
-        public static async Task<HttpResponseMessage> HttpStart(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestMessage req,
-            [DurableClient] IDurableOrchestrationClient starter,
-            ILogger log)
+        // Activity function
+        [FunctionName(nameof(SayHello))]
+        public static string SayHello([ActivityTrigger] string name, ILogger log)
         {
-            // Function input comes from the request content.
-            // Call the orchestrator function
-            string instanceId = await starter.StartNewAsync("OrchestratorFunction", null);
-
-            log.LogInformation($"Started orchestration with ID = '{instanceId}'.");
-
-            // Create URL to check status
-            return starter.CreateCheckStatusResponse(req, instanceId);
+            log.LogInformation($"Saying hello to {name}.");
+            return $"Hello {name}!";
         }
     }
 }

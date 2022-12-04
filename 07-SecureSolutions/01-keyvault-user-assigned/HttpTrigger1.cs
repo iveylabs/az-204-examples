@@ -19,10 +19,10 @@ namespace Company.Function
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            string userAssignedClientId = "9efd9f2c-84e8-4a8d-8bd4-80a0b4d88875";
+            string userAssignedClientId = "";
             var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions { ManagedIdentityClientId = userAssignedClientId });
 
-            var client = new SecretClient(new Uri("https://piveykv.vault.azure.net/"), credential);
+            var client = new SecretClient(new Uri("https://iveykv.vault.azure.net/"), credential);
 
             KeyVaultSecret secret = await client.GetSecretAsync("mysecret");
 

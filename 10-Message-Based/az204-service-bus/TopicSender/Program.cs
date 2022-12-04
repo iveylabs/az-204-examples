@@ -2,7 +2,7 @@
 using Azure.Messaging.ServiceBus;
 
 string connectionString = "";
-string topicName = "";
+string topicName = "demo-topic";
 const int numberOfMessages = 3;
 
 ServiceBusClient serviceBusClient = new ServiceBusClient(connectionString);
