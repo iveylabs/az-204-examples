@@ -2,7 +2,7 @@
 using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Producer;
 
-const string connectionString = "";
+const string connectionString = "Endpoint=sb://iveyhubs.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=La/pTAyBrUq71RP9w3wK9kHIwluHgVe1Y2Vgwm65BeU=";
 const string eventHubName = "iveyhub";
 const int numOfEvents = 50;
 

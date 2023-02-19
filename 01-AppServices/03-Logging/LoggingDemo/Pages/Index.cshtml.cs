@@ -14,7 +14,7 @@ namespace LoggingDemo.Pages
 
         public void OnGet()
         {
-            _logger.LogInformation("Custom log entry for the AZ-204 course");
+            _logger.LogInformation("Custom log entry for the AZ-204 course.");
         }
     }
 }
