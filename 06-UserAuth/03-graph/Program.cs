@@ -69,6 +69,7 @@ async Task<string> ObtainTokenAsync(IPublicClientApplication app)
         {
             Console.WriteLine("No token found in local cache. Trying to get token interactively...");
             AuthenticationResult result = await app.AcquireTokenInteractive(scopes).ExecuteAsync();
+            result.ClaimsPrincipal.IsInRole("customRole");
             Console.WriteLine("Token acquired successfully.\n");
             return result.AccessToken;
         }

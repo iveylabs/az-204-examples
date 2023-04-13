@@ -1,10 +1,12 @@
-﻿using System;
+﻿
+using System;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Consumer;
 using Azure.Messaging.EventHubs.Processor;
+using System.Text.Json;
 
 const string ehubNamespaceConnectionString = "";
 const string eventHubName = "iveyhub";
@@ -47,10 +49,11 @@ async Task ReceiveEvents()
 async Task ProcessEventHandler(ProcessEventArgs eventArgs)
 {
     // Write the body of the event to the console window
-    Console.WriteLine($"\tReceived event: {Encoding.UTF8.GetString(eventArgs.Data.Body.ToArray())} in partition {eventArgs.Partition.PartitionId}");
-    
+    Console.WriteLine($"Received event: {Encoding.UTF8.GetString(eventArgs.Data.Body.ToArray())} in partition {eventArgs.Partition.PartitionId}");
+
     // Update checkpoint in the blob storage so that the app receives only new events the next time it's run
     await eventArgs.UpdateCheckpointAsync(eventArgs.CancellationToken);
+    
 }
 
 Task ProcessErrorHandler(ProcessErrorEventArgs eventArgs)

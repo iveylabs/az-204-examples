@@ -43,7 +43,21 @@ var auth = await ObtainTokenAsync(app);
 
 // Output the ID and access tokens to console
 Console.WriteLine($"ID:\n{auth.IdToken}");
-Console.WriteLine($"Access:\n{auth.AccessToken}");
+Console.WriteLine($"Access:\n{auth.AccessToken}\n");
+string name = "";
+
+// List which roles this user has assigned
+foreach(var claim in auth.ClaimsPrincipal.Claims)
+{
+    if(claim.Type == "name")
+    {
+        name = claim.Value;
+    }
+    if(claim.Type == "roles")
+    {
+        Console.WriteLine($"{name} is a member of the following roles:\n  {claim.Value}");
+    }
+}
 
 // Method to obtain a token, trying to obtain from the local user token cache first, and then interactively if unable to from cache
 async Task<AuthenticationResult> ObtainTokenAsync(IPublicClientApplication app)

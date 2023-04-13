@@ -5,7 +5,7 @@ using Azure.Messaging.ServiceBus;
 
 string connectionString = "";
 string queueName = "demo-queue";
-const int numberOfMessages = 4000;
+const int numberOfMessages = 400;
 
 // The Service Bus client types are safe to cache and use as a singleton for the lifetime
 // of the application, which is best practice when messages are being published or read

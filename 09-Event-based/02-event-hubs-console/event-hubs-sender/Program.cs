@@ -1,15 +1,16 @@
-﻿using System.Text;
+﻿
+using System.Text;
 using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Producer;
+using System.Text.Json;
 
-const string connectionString = "Endpoint=sb://iveyhubs.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=La/pTAyBrUq71RP9w3wK9kHIwluHgVe1Y2Vgwm65BeU=";
+const string connectionString = "";
 const string eventHubName = "iveyhub";
-const int numOfEvents = 50;
+const int numOfEvents = 2000;
 
 // The Event Hubs client types are safe to cache and use as a singleton for the lifetime
 // of the application, which is best practice when events are being published or read regularly.
 EventHubProducerClient producerClient;
-
 await SendEvents();
 
 async Task SendEvents()
@@ -22,7 +23,39 @@ async Task SendEvents()
 
     for (int i = 1; i <= numOfEvents; i++)
     {
-        if (! eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes($"Event {i}"))))
+        CustomEvent myEvent = new();
+
+        var rpm = new Random();
+
+        if(i <= numOfEvents/3)
+        {
+            myEvent.WarehouseId = "Warehouse1";
+            myEvent.ConveyorId = "Conveyor1.1";
+            myEvent.RPM = rpm.Next(0, 700);
+        }
+        else if(i > numOfEvents/3 && i < numOfEvents/6)
+        {
+            myEvent.WarehouseId = "Warehouse1";
+            myEvent.ConveyorId = "Conveyor1.2";
+            myEvent.RPM = rpm.Next(0, 700);
+        }
+        else
+        {
+            myEvent.WarehouseId = "Warehouse2";
+            myEvent.ConveyorId = "Conveyor2.1";
+            myEvent.RPM = rpm.Next(0, 700);
+        }
+
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
+
+        string jsonString = JsonSerializer.Serialize(myEvent, options);
+
+        EventData eventData = new EventData(Encoding.UTF8.GetBytes(jsonString));
+
+        if (! eventBatch.TryAdd(eventData))
         {
             // if it is too large for the batch
             throw new Exception($"Event {i} is too large for the batch and cannot be sent.");
