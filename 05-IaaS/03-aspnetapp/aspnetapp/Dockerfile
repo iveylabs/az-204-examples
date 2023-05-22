@@ -11,7 +11,7 @@ COPY aspnetapp/. .
 RUN dotnet publish -c Release -o /app --use-current-runtime --self-contained false --no-restore
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS run
 WORKDIR /app
 COPY --from=build /app .
 ENTRYPOINT ["dotnet", "aspnetapp.dll"]

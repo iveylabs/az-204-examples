@@ -15,7 +15,7 @@
               "daysAfterModificationGreaterThan": 45
             },
             "delete": {
-              "daysAfterModificationGreaterThan": 90
+              "daysAfterModificationGreaterThan": 180
             }
           }
         },
