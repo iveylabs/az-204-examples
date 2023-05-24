@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "_03_change_feed": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7008",
+      "launchBrowser": false
+    }
+  }
+}
