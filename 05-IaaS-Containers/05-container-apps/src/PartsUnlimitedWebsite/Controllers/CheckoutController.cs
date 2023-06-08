@@ -54,7 +54,7 @@ namespace PartsUnlimited.Controllers
         public async Task<IActionResult> AddressAndPayment(Order order)
         {
             var httpClient = new HttpClient();
-            var paymentController = "https://pu-payments.victorioustree-ad307d41.uksouth.azurecontainerapps.io/payments";
+            var paymentController = "/payments";
             var formCollection = await HttpContext.Request.ReadFormAsync();
 
             try

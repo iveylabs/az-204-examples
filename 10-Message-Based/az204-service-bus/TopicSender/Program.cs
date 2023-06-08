@@ -3,7 +3,7 @@ using Azure.Messaging.ServiceBus;
 
 string connectionString = "";
 string topicName = "demo-topic";
-const int numberOfMessages = 3;
+const int numberOfMessages = 500;
 
 ServiceBusClient serviceBusClient = new ServiceBusClient(connectionString);
 ServiceBusSender serviceBusSender = serviceBusClient.CreateSender(topicName);

@@ -26,7 +26,7 @@
   },
   "Keys": {
     "ApplicationInsights": {
-      "InstrumentationKey": "8a8e7fa8-9cc7-4935-8b50-7d5bb67f5c9c"
+      "InstrumentationKey": ""
     }
   },
   "ConnectionStrings": {
