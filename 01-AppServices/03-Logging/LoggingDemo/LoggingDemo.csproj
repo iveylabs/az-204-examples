@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\PublishProfiles\" />
+    <Compile Remove="Properties\PublishProfiles\**" />
+    <Content Remove="Properties\PublishProfiles\**" />
+    <EmbeddedResource Remove="Properties\PublishProfiles\**" />
+    <None Remove="Properties\PublishProfiles\**" />
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\**" />
   </ItemGroup>
 
 </Project>
