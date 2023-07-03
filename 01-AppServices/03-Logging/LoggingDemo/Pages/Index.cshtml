@@ -1,9 +1,10 @@
 ﻿@page
+@inject IConfiguration Configuration
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
 
 <div class="text-center">
-    <h1>@Environment.GetEnvironmentVariable("MY_GREETING")</h1>
+    <h1>@Configuration["MY_GREETING"]</h1>
 </div>
