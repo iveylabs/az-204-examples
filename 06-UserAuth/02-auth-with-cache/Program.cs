@@ -3,8 +3,8 @@ using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensions.Msal;
 
 // App registration variables
-const string _clientId = "";
-const string _tenantId = "";
+const string _clientId = "c0be94d5-dfe1-4075-aac8-f832e2b77035";
+const string _tenantId = "94fc63c3-bfea-4ef8-8e7c-817fcabf724f";
 
 // Cache variables
 string _cacheFileLocation = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AZ-204");
