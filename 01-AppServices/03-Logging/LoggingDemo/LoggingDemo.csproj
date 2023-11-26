@@ -14,4 +14,8 @@
     <_WebToolingArtifacts Remove="Properties\PublishProfiles\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="7.0.11" />
+  </ItemGroup>
+
 </Project>

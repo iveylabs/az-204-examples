@@ -43,9 +43,6 @@ namespace CustomerQuery.Controllers
             {
                 foreach (var entity in queryResults)
                 {
-                    //TableEntity newEntity = tableClient.GetEntity<TableEntity>(entity.PartitionKey, entity.RowKey);
-                    //newEntity["Value"] = ((double)entity["Value"] * 100) / 100.0;
-                    //tableClient.UpdateEntity(newEntity, entity.ETag, TableUpdateMode.Merge);
                     data.TableCustomers.Add(new Customer
                     {
                         Name = data.SearchString,
@@ -71,9 +68,6 @@ namespace CustomerQuery.Controllers
                         var quickQueryResults = tableClient.Query<TableEntity>(filter: $"PartitionKey eq '{parts[0]}' and RowKey eq '{parts[1]}'");
                         foreach (var entity in quickQueryResults)
                         {
-                            //TableEntity newEntity = tableClient.GetEntity<TableEntity>(entity.PartitionKey, entity.RowKey);
-                            //newEntity["Value"] = ((double)entity["Value"] * 100) / 100.0;
-                            //tableClient.UpdateEntity(newEntity, entity.ETag, TableUpdateMode.Merge);
                             data.MatchedCustomers.Add(new Customer
                             {
                                 Name = data.SearchString,

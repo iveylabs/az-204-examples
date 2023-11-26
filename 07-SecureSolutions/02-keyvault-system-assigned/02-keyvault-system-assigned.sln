@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggingDemo", "LoggingDemo.csproj", "{98C0D037-19E0-4920-88D9-E7623EE44DDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "02-keyvault-system-assigned", "02-keyvault-system-assigned.csproj", "{48818004-820A-4F82-8F36-6C925402F6A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{98C0D037-19E0-4920-88D9-E7623EE44DDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{98C0D037-19E0-4920-88D9-E7623EE44DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{98C0D037-19E0-4920-88D9-E7623EE44DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{98C0D037-19E0-4920-88D9-E7623EE44DDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48818004-820A-4F82-8F36-6C925402F6A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48818004-820A-4F82-8F36-6C925402F6A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48818004-820A-4F82-8F36-6C925402F6A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48818004-820A-4F82-8F36-6C925402F6A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {2676243D-A858-472B-B844-E7CF6C287C61}
+		SolutionGuid = {52B67E09-D419-43B5-BE40-9517E61A21B2}
 	EndGlobalSection
 EndGlobal

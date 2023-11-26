@@ -1,3 +1,4 @@
+
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.FeatureManagement;
 
@@ -18,7 +19,8 @@ builder.Host.ConfigureAppConfiguration((hostingContext, builder) =>
                })
                .ConfigureRefresh(refreshOptions =>
                {
-                   refreshOptions.Register("demofeature");
+                   refreshOptions.Register("demofeature")
+                                 .SetCacheExpiration(TimeSpan.FromSeconds(5));
                })
                .Select(KeyFilter.Any, hostingContext.HostingEnvironment.EnvironmentName);
     });

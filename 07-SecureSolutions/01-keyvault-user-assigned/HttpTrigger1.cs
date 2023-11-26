@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using Azure.Core;
 
 namespace Company.Function
 {
@@ -21,15 +22,33 @@ namespace Company.Function
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             string userAssignedClientId = "";
-            var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions { ManagedIdentityClientId = userAssignedClientId });
+            string secretName = "";
+            Uri vaultUri = new("");
+            
+            TokenCredential credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions { ManagedIdentityClientId = userAssignedClientId });
 
-            var client = new SecretClient(new Uri("https://iveykv.vault.azure.net/"), credential);
+            try
+            {
+                var client = new SecretClient(vaultUri, credential);
 
-            KeyVaultSecret secret = await client.GetSecretAsync("mysecret");
+                KeyVaultSecret secret = await client.GetSecretAsync(secretName);
 
-            string responseMessage = $"Secret value: { secret.Value }";
+                string responseMessage = $"Secret value: { secret.Value }";
 
-            return new OkObjectResult(responseMessage);
+                return new OkObjectResult(responseMessage);
+            }
+            catch (Azure.RequestFailedException) // Because of an annoying known issue
+            {
+                credential = new AzureCliCredential();
+
+                var client = new SecretClient(vaultUri, credential);
+
+                KeyVaultSecret secret = await client.GetSecretAsync(secretName);
+
+                string responseMessage = $"Secret value: { secret.Value }";
+
+                return new OkObjectResult(responseMessage);
+            }
         }
     }
 }

@@ -11,15 +11,17 @@ namespace Iveylabs.Function
     public static class CosmosTrigger1
     {
         private static readonly string _connectionString = "";
-        private static readonly string _databaseId = "ToDoList";
-        private static readonly string _containerId = "Items2";
-        private static CosmosClient cosmosClient = new CosmosClient(_connectionString);
+        private static readonly string _databaseId = "ToDo";
+        private static readonly string _containerId = "CopyTasks";
+        private static readonly CosmosClient cosmosClient = new(_connectionString);
 
         [FunctionName("CosmosTrigger1")]
         public static async Task Run([CosmosDBTrigger(
-            databaseName: "ToDoList",
-            collectionName: "Items",
-            ConnectionStringSetting = "iveycosmos_DOCUMENTDB",
+            databaseName: "ToDo",
+            collectionName: "Tasks",
+            ConnectionStringSetting = "cosmos_DOCUMENTDB",
+/* The lease container acts as state storage and coordinates processing the change feed across multiple workers.
+* The lease container can be stored in the same account as the monitored container or in a separate account.*/
             LeaseCollectionName = "leases",
             CreateLeaseCollectionIfNotExists = true)]IReadOnlyList<Document> input, ILogger log)
         {
@@ -27,7 +29,7 @@ namespace Iveylabs.Function
 
             foreach(Document doc in input)
             {
-                log.LogInformation("Pushed doc into container2");
+                log.LogInformation("Pushed doc into container");
                 log.LogInformation($"doc: {doc}");
                 try
                 {
@@ -35,7 +37,7 @@ namespace Iveylabs.Function
                 }
                 catch(Exception e)
                 {
-                    log.LogInformation($"Exception pushing dock into container2: {e}");
+                    log.LogInformation($"Exception pushing doc into container: {e}");
                 }
             }
         }

@@ -22,7 +22,15 @@
         
         public async Task AddItemAsync(Item item)
         {
-            await this._container.CreateItemAsync<Item>(item, new PartitionKey(item.Id));
+            await this._container.CreateItemAsync<Item>(
+                item,
+                new PartitionKey(item.Id),
+                new ItemRequestOptions {
+                    PreTriggers = new List<string> {
+                        "validate"
+                    }
+                }
+            );
         }
 
         public async Task DeleteItemAsync(string id)
@@ -60,7 +68,10 @@
 
         public async Task UpdateItemAsync(string id, Item item)
         {
-            await this._container.UpsertItemAsync<Item>(item, new PartitionKey(id));
+            await this._container.UpsertItemAsync<Item>(
+                item,
+                new PartitionKey(id)
+            );
         }
     }
 }

@@ -1,12 +1,10 @@
-﻿using Microsoft.Graph;
+﻿
+using Microsoft.Graph;
 using Azure.Identity;
 
 // App registration variables
-const string _clientId = "Put your app/client ID here";
-const string _tenantId = "Put your tenant ID here";
-
-// These scopes can be added to for demonstration purposes
-string[] scopes = { "User.Read" };
+const string _clientId = "";
+const string _tenantId = "";
 
 // Configure the interactive browser credential options
 var options = new InteractiveBrowserCredentialOptions
@@ -17,13 +15,13 @@ var options = new InteractiveBrowserCredentialOptions
 };
 
 // Obtain a token from the interactive authentication provider
-var credential = new InteractiveBrowserCredential(options);
+var authProvider = new InteractiveBrowserCredential(options);
 
 // Create a new Graph client with the authentication provider.
-GraphServiceClient graphClient = new (credential);
+GraphServiceClient graphClient = new (authProvider);
 
 // Make a Microsoft Graph API query
 var user = await graphClient.Me.GetAsync();
 
 // Customized greeting for the logged-in user
-Console.WriteLine($"Hello, {user?.GivenName}! Your name was obtained from MS Graph.\n"); 
+Console.WriteLine($"Hello, {user?.DisplayName}! Your name was obtained from MS Graph.\n");
